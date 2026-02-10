@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { PlusCircle, MessageSquare, BarChart3 } from "lucide-react"
 import Link from "next/link"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/lib/auth"
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
