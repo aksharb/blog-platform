@@ -40,7 +40,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Admin Login</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Log In</h1>
           <p className="text-gray-500 text-sm mt-2">
             Enter your credentials to continue
           </p>
@@ -95,6 +95,13 @@ export default function LoginPage() {
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          Don't have an account?{" "}
+          <a href="/signup" className="text-black font-semibold hover:underline">
+            Sign Up
+          </a>
+        </p>
       </div>
     </div>
   )

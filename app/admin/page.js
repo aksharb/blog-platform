@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { PlusCircle, MessageSquare, Trash2 } from "lucide-react"
 import Link from "next/link"
+import LogoutButton from "@/components/LogoutButton"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import DeleteButton from "@/components/DeleteButton" // We'll create this next
@@ -25,15 +26,16 @@ export default async function AdminDashboard() {
       <nav className="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white font-bold">
-            A
+            {session.user.name?.charAt(0).toUpperCase()}
           </div>
-          <span className="font-semibold text-gray-900">Admin Panel</span>
+          <span className="font-semibold text-gray-900">Welcome {session.user.name}</span>
         </div>
         <div className="flex items-center gap-4 text-sm text-gray-500">
           {session.user.email}
           <Link href="/" className="ml-4 text-blue-600 hover:underline">
             View Site
           </Link>
+          <LogoutButton />
         </div>
       </nav>
 
@@ -63,15 +65,17 @@ export default async function AdminDashboard() {
             </div>
           </Link>
 
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm opacity-60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
-                <MessageSquare size={24} />
+          <Link href="/admin/comments">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-purple-50 text-purple-600 rounded-lg group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                  <MessageSquare size={24} />
+                </div>
               </div>
+              <h3 className="font-semibold text-gray-900 mb-1">Comments</h3>
+              <p className="text-gray-500 text-sm">Manage comments for your posts</p>
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Comments</h3>
-            <p className="text-gray-500 text-sm">Feature coming soon.</p>
-          </div>
+          </Link>
         </div>
 
         {/* NEW: Manage Posts Section with Delete Button */}

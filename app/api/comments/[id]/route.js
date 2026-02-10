@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth"
 import { prisma } from "@/lib/prisma"
 import { authOptions } from "@/lib/auth"
 
+// DELETE /api/comments/:id
+// Only an admin or the author of the post may delete comments.
 export async function DELETE(req, { params }) {
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -17,9 +19,7 @@ export async function DELETE(req, { params }) {
       include: { post: { select: { authorId: true } } },
     })
 
-    if (!comment) {
-      return NextResponse.json({ error: "Comment not found" }, { status: 404 })
-    }
+    if (!comment) return NextResponse.json({ error: "Comment not found" }, { status: 404 })
 
     // Allow delete if user is admin or post author
     const isAdmin = session.user.role === "ADMIN"
@@ -33,9 +33,6 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error("DELETE /api/comments/[id] error:", error)
-    return NextResponse.json(
-      { error: "Failed to delete comment" },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: "Failed to delete comment" }, { status: 500 })
   }
 }
