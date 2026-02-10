@@ -1,13 +1,19 @@
 import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import CommentSection from "@/app/components/CommentSection"
 
 async function getPost(slug) {
-  const post = await prisma.post.findUnique({
+  return await prisma.post.findUnique({
     where: { slug },
-    include: { author: { select: { name: true } } },
+    include: {
+      author: { select: { name: true } },
+      comments: {
+        include: { author: { select: { name: true } } },
+        orderBy: { createdAt: "desc" },
+      },
+    },
   })
-  return post
 }
 
 export default async function PostPage({ params }) {
@@ -48,6 +54,9 @@ export default async function PostPage({ params }) {
             {post.content}
           </div>
         </div>
+
+        <hr className="my-12 border-white/10" />
+        <CommentSection postId={post.id} initialComments={post.comments} />
       </article>
     </div>
   )
